@@ -1,6 +1,6 @@
 {
-    "name": "kenobi883/gotomeeting-api",
-    "description": "Guzzle-based client to the Citrix GoToMeeting APi.",
+    "name": "kenobi883/GoToMeeting",
+    "description": "Guzzle-based client to the Citrix GoToMeeting API.",
     "minimum-stability": "dev",
     "license": "MIT",
     "authors": [
