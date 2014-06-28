@@ -10,7 +10,8 @@ namespace kenobi883\GoToMeeting\Models;
  * Class Organizer
  * @package kenobi883\GoToMeeting\Models
  */
-class Organizer {
+class Organizer
+{
     /**
      * @var string
      */
@@ -178,5 +179,4 @@ class Organizer {
     {
         $this->status = $status;
     }
-
-} 
+}

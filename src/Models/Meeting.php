@@ -11,8 +11,8 @@ namespace kenobi883\GoToMeeting\Models;
  *
  * @package kenobi883\GoToMeeting\Models
  */
-class Meeting {
-
+class Meeting
+{
     /**
      * @var int
      */
@@ -261,50 +261,38 @@ class Meeting {
      */
     public function parseFromJson($response)
     {
-        if (isset($response['uniqueMeetingId']))
-        {
+        if (isset($response['uniqueMeetingId'])) {
             $this->setUniqueMeetingId((int) $response['uniqueMeetingId']);
         }
-        if (isset($response['meetingId']))
-        {
+        if (isset($response['meetingId'])) {
             $this->setMeetingId((int) $response['meetingId']);
         }
-        if (isset($response['createTime']))
-        {
+        if (isset($response['createTime'])) {
             $this->setCreateTime(new \DateTime($response['createTime']));
         }
-        if (isset($response['status']))
-        {
+        if (isset($response['status'])) {
             $this->setStatus($response['status']);
         }
-        if (isset($response['subject']))
-        {
+        if (isset($response['subject'])) {
             $this->setSubject($response['subject']);
         }
-        if (isset($response['startTime']))
-        {
+        if (isset($response['startTime'])) {
             $this->setStartTime(new \DateTime($response['startTime']));
         }
-        if (isset($response['endTime']))
-        {
+        if (isset($response['endTime'])) {
             $this->setEndTime(new \DateTime($response['endTime']));
         }
-        if (isset($response['conferenceCallInfo']))
-        {
+        if (isset($response['conferenceCallInfo'])) {
             $this->setConferenceCallInfo($response['conferenceCallInfo']);
         }
-        if (isset($response['passwordRequired']))
-        {
+        if (isset($response['passwordRequired'])) {
             $this->setPasswordRequired($response['passwordRequired'] == 'true');
         }
-        if (isset($response['meetingType']))
-        {
+        if (isset($response['meetingType'])) {
             $this->setMeetingType($response['meetingType']);
         }
-        if (isset($response['maxParticipants']))
-        {
+        if (isset($response['maxParticipants'])) {
             $this->setMaxParticipants((int) $response['maxParticipants']);
         }
     }
-
 }

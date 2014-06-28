@@ -10,8 +10,8 @@ namespace kenobi883\GoToMeeting\Models;
  * Class Auth
  * @package kenobi883\GoToMeeting\Models
  */
-class Auth {
-
+class Auth
+{
     /**
      * @var string
      */
@@ -212,38 +212,29 @@ class Auth {
      */
     public function parseFromJson($response)
     {
-        if (isset($response['access_token']))
-        {
+        if (isset($response['access_token'])) {
             $this->setAccessToken($response['access_token']);
         }
-        if (isset($response['expires_in']))
-        {
+        if (isset($response['expires_in'])) {
             $this->setExpiresIn((int) $response['expires_in']);
         }
-        if (isset($response['refresh_token']))
-        {
+        if (isset($response['refresh_token'])) {
             $this->setRefreshToken($response['refresh_token']);
         }
-        if (isset($response['organizer_key']))
-        {
+        if (isset($response['organizer_key'])) {
             $this->setOrganizerKey($response['organizer_key']);
         }
-        if (isset($response['account_key']))
-        {
+        if (isset($response['account_key'])) {
             $this->setAccountKey($response['account_key']);
         }
-        if (isset($response['firstName']))
-        {
+        if (isset($response['firstName'])) {
             $this->setFirstName($response['firstName']);
         }
-        if (isset($response['lastName']))
-        {
+        if (isset($response['lastName'])) {
             $this->setLastName($response['lastName']);
         }
-        if (isset($response['email']))
-        {
+        if (isset($response['email'])) {
             $this->setEmail($response['email']);
         }
     }
-
 }

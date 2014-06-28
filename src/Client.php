@@ -10,7 +10,8 @@ namespace kenobi883\GoToMeeting;
  * Class Client
  * @package kenobi883\GoToMeeting
  */
-class Client {
+class Client
+{
 
     /**
      * @var string root URL for authorizing requests
@@ -71,5 +72,4 @@ class Client {
     {
         $this->guzzleClient = $client;
     }
-
-} 
+}
