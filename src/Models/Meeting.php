@@ -75,7 +75,7 @@ class Meeting
      */
     public function __construct($response = array())
     {
-
+        $this->parseFromJson($response);
     }
 
     /**

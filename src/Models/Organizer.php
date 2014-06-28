@@ -53,6 +53,16 @@ class Organizer
     private $maximumAttendeesAllowed;
 
     /**
+     * Default constructor. Parse provided response from JSON.
+     *
+     * @param array $response optional parameter to pass in initial values (as if from a JSON response)
+     */
+    public function __construct($response = array())
+    {
+        $this->parseFromJson($response);
+    }
+
+    /**
      * @return string
      */
     public function getEmail()
@@ -178,5 +188,38 @@ class Organizer
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * Parse each known property into the model from an array of values.
+     *
+     * @param array $response values from JSON representation of object
+     */
+    public function parseFromJson($response)
+    {
+        if (isset($response['organizerkey'])) {
+            $this->setOrganizerKey($response['organizerkey']);
+        }
+        if (isset($response['groupkey'])) {
+            $this->setGroupKey($response['groupkey']);
+        }
+        if (isset($response['email'])) {
+            $this->setEmail($response['email']);
+        }
+        if (isset($response['firstname'])) {
+            $this->setFirstName($response['firstname']);
+        }
+        if (isset($response['lastname'])) {
+            $this->setLastName($response['lastname']);
+        }
+        if (isset($response['groupname'])) {
+            $this->setGroupName($response['groupname']);
+        }
+        if (isset($response['status'])) {
+            $this->setStatus($response['status']);
+        }
+        if (isset($response['maxnumattendeesallowed'])) {
+            $this->setMaximumAttendeesAllowed($response['maxnumattendeesallowed']);
+        }
     }
 }
