@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "4e52d7db9cea86a6fa2370c4f8f4d9fb",
+    "hash": "438a8cf4375ab959fd20f27a1e03a441",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -11,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "ddbb19ea918a6b96c19399bf66148b23bbc11230"
+                "reference": "095cf4db559bebc78d967890eb93280d8ceb5a08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ddbb19ea918a6b96c19399bf66148b23bbc11230",
-                "reference": "ddbb19ea918a6b96c19399bf66148b23bbc11230",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/095cf4db559bebc78d967890eb93280d8ceb5a08",
+                "reference": "095cf4db559bebc78d967890eb93280d8ceb5a08",
                 "shasum": ""
             },
             "require": {
@@ -68,7 +69,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-06-17 23:59:27"
+            "time": "2014-06-18 18:22:41"
         },
         {
             "name": "guzzlehttp/streams",
