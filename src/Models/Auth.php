@@ -227,6 +227,9 @@ class Auth
         if (isset($response['account_key'])) {
             $this->setAccountKey($response['account_key']);
         }
+        if (isset($response['account_type'])) {
+            $this->setAccountType($response['account_type']);
+        }
         if (isset($response['firstName'])) {
             $this->setFirstName($response['firstName']);
         }
