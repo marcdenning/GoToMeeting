@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7b5646e484ba954cd2df1b49299123da",
+    "hash": "fd83891efc973d9f63e0184543226ec3",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -245,12 +245,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "349f61476a763de5c335228c7a11aa3d40c8e3d3"
+                "reference": "09a53c29da426623e9a8a416dda1c7ed3b2d3d72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/349f61476a763de5c335228c7a11aa3d40c8e3d3",
-                "reference": "349f61476a763de5c335228c7a11aa3d40c8e3d3",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/09a53c29da426623e9a8a416dda1c7ed3b2d3d72",
+                "reference": "09a53c29da426623e9a8a416dda1c7ed3b2d3d72",
                 "shasum": ""
             },
             "require": {
@@ -302,7 +302,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-06-28 14:18:46"
+            "time": "2014-06-30 09:08:59"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -567,12 +567,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "215e10f6355e648faa786c0ba9093d132b30e56b"
+                "reference": "f9f31b9e7f93483fd4dbd500ee41e2e5fc0923b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/215e10f6355e648faa786c0ba9093d132b30e56b",
-                "reference": "215e10f6355e648faa786c0ba9093d132b30e56b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/f9f31b9e7f93483fd4dbd500ee41e2e5fc0923b7",
+                "reference": "f9f31b9e7f93483fd4dbd500ee41e2e5fc0923b7",
                 "shasum": ""
             },
             "require": {
@@ -617,7 +617,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2014-06-28 11:28:27"
+            "time": "2014-07-05 15:46:50"
         },
         {
             "name": "sebastian/comparator",
@@ -894,12 +894,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "a0e90f173c33a57bfbb5561793d25864182239ad"
+                "reference": "4168f7b8e211cdc2d778ab78f35666580a6d7437"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/a0e90f173c33a57bfbb5561793d25864182239ad",
-                "reference": "a0e90f173c33a57bfbb5561793d25864182239ad",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/4168f7b8e211cdc2d778ab78f35666580a6d7437",
+                "reference": "4168f7b8e211cdc2d778ab78f35666580a6d7437",
                 "shasum": ""
             },
             "require": {
@@ -934,7 +934,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-20 17:41:51"
+            "time": "2014-07-08 12:21:41"
         }
     ],
     "aliases": [
