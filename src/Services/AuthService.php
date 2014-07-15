@@ -32,10 +32,10 @@ class AuthService extends AbstractService
         $query = new Query();
         $guzzleClient = $this->client->getGuzzleClient();
         $request = $guzzleClient->createRequest('GET', $this->endpoint);
-        $query->add('grant_type', 'password');
-        $query->add('user_id', $userId);
-        $query->add('password', $password);
-        $query->add('client_id', $this->client->getApiKey());
+        $query->add('grant_type', 'password')
+            ->add('user_id', $userId)
+            ->add('password', $password)
+            ->add('client_id', $this->client->getApiKey());
         $request->setQuery($query);
         $jsonBody = $this->sendRequest($request);
         return new Auth($jsonBody);
