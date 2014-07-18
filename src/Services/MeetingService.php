@@ -14,13 +14,10 @@ use kenobi883\GoToMeeting\Models\Meeting;
 /**
  * Class MeetingService provides access to meeting API methods.
  *
- * @package kenobi883\GoToMeeting
+ * @package kenobi883\GoToMeeting\Services
  */
 class MeetingService extends AbstractService
 {
-
-    private $endpoint = 'G2M/rest/';
-
     /**
      * Retrieve a specific meeting from the API.
      *
