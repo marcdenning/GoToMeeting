@@ -12,7 +12,6 @@ namespace kenobi883\GoToMeeting;
  */
 class Client
 {
-
     /**
      * @var string root URL for authorizing requests
      */

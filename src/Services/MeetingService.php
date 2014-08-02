@@ -26,9 +26,7 @@ class MeetingService extends AbstractService
      */
     public function getMeeting($meetingId)
     {
-        $guzzleClient = $this->client->getGuzzleClient();
-        $request = $guzzleClient->createRequest('GET', "meetings/{$meetingId}");
-        $jsonBody = $this->sendRequest($request);
+        $jsonBody = $this->client->sendRequest('GET', "meetings/{$meetingId}");
         $meeting = new Meeting($jsonBody[0]);
         return $meeting;
     }
@@ -87,13 +85,8 @@ class MeetingService extends AbstractService
      */
     protected function getMeetings(Query $query)
     {
-        // Create and build API request
-        $guzzleClient = $this->client->getGuzzleClient();
-        $request = $guzzleClient->createRequest('GET', 'meetings');
-        $request->setQuery($query);
-
         // Send request
-        $jsonBody = $this->sendRequest($request);
+        $jsonBody = $this->client->sendRequest('GET', 'meetings', $query);
 
         // Parse each meeting result
         $meetings = array();

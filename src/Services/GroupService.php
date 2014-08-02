@@ -19,13 +19,11 @@ class GroupService extends AbstractService
      */
     public function getGroups()
     {
-        $guzzleClient = $this->client->getGuzzleClient();
-        $request = $guzzleClient->createRequest('GET', 'groups');
-        $jsonBody = $this->sendRequest($request);
+        $jsonBody = $this->client->sendRequest('GET', 'groups');
         $groups = array();
         foreach ($jsonBody as $groupResponse) {
             $groups[] = new Group($groupResponse);
         }
         return $groups;
     }
-} 
+}
