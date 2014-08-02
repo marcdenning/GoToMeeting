@@ -18,7 +18,7 @@ use kenobi883\GoToMeeting\Services\AbstractService;
  */
 class AuthService extends AbstractService
 {
-    private $endpoint = 'oauth/';
+    protected $endpoint = 'oauth/';
 
     /**
      * Authenticate with the server and retrieve an auth token.
@@ -30,14 +30,11 @@ class AuthService extends AbstractService
     public function authenticate($userId, $password)
     {
         $query = new Query();
-        $guzzleClient = $this->client->getGuzzleClient();
-        $request = $guzzleClient->createRequest('GET', $this->endpoint);
         $query->add('grant_type', 'password')
             ->add('user_id', $userId)
             ->add('password', $password)
             ->add('client_id', $this->client->getApiKey());
-        $request->setQuery($query);
-        $jsonBody = $this->sendRequest($request);
+        $jsonBody = $this->client->sendRequest('GET', $this->endpoint, $query);
         return new Auth($jsonBody);
     }
 }

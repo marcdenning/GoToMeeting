@@ -29,6 +29,11 @@ class Client
     private $guzzleClient;
 
     /**
+     * @var \kenobi883\GoToMeeting\Models\Auth
+     */
+    private $auth;
+
+    /**
      * Default constructor.
      *
      * Configures the client for authenticating.
@@ -72,4 +77,50 @@ class Client
     {
         $this->guzzleClient = $client;
     }
+
+    /**
+     * @return Models\Auth
+     */
+    public function getAuth()
+    {
+        return $this->auth;
+    }
+
+    /**
+     * @param Models\Auth $auth
+     */
+    public function setAuth($auth)
+    {
+        $this->auth = $auth;
+    }
+
+    /**
+     * Handle sending requests to the API. All responses returned as JSON.
+     *
+     * @param string $method HTTP method for the request
+     * @param string $path relative URL to append to the root API endpoint
+     * @param \GuzzleHttp\Query $query optional data to send along with request
+     * @param bool $isAuthRequest optional flag to not pass the OAuth token with request
+     *  because we do not have it yet
+     * @return mixed
+     */
+    public function sendRequest($method, $path, $query = null, $isAuthRequest = false)
+    {
+        $guzzleClient = $this->getGuzzleClient();
+        $request = $guzzleClient->createRequest($method, $path);
+        $request->addHeaders(array(
+            'Accept' => 'application/json',
+            'Content-type' => 'application/json'
+        ));
+        if (!$isAuthRequest && isset($this->auth)) {
+            $accessToken = $this->auth->getAccessToken();
+            $request->addHeader('Authorization', "Oauth oauth_token={$accessToken}");
+        }
+        if ($query != null) {
+            $request->setQuery($query);
+        }
+        $response = $guzzleClient->send($request);
+        return $response->json();
+    }
+
 }
