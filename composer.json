@@ -1,5 +1,5 @@
 {
-    "name": "kenobi883/GoToMeeting",
+    "name": "kenobi883/gotomeeting",
     "description": "Guzzle-based client to the Citrix GoToMeeting API.",
     "minimum-stability": "dev",
     "license": "MIT",
