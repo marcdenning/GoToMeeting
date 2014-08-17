@@ -113,7 +113,8 @@ class Client
         ));
         if (!$isAuthRequest && isset($this->auth)) {
             $accessToken = $this->auth->getAccessToken();
-            $request->addHeader('Authorization', "Oauth oauth_token={$accessToken}");
+            $request->addHeader('Authorization', "OAuth oauth_token={$accessToken}");
+            $request->setPath("G2M/rest/{$path}");
         }
         if ($query != null) {
             $request->setQuery($query);
