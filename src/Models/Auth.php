@@ -10,7 +10,7 @@ namespace kenobi883\GoToMeeting\Models;
  * Class Auth
  * @package kenobi883\GoToMeeting\Models
  */
-class Auth
+class Auth implements \JsonSerializable
 {
     /**
      * @var string
@@ -239,5 +239,17 @@ class Auth
         if (isset($response['email'])) {
             $this->setEmail($response['email']);
         }
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
