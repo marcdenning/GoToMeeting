@@ -18,10 +18,12 @@ use kenobi883\GoToMeeting\Services\AbstractService;
  */
 class AuthService extends AbstractService
 {
-    protected $endpoint = 'oauth/';
+    protected $endpoint = 'oauth';
 
     /**
      * Authenticate with the server and retrieve an auth token.
+     *
+     * Currently implements Citrix's {@link https://developer.citrixonline.com/page/direct-login "Direct Login"} method.
      *
      * @param string $userId
      * @param string $password
@@ -29,12 +31,13 @@ class AuthService extends AbstractService
      */
     public function authenticate($userId, $password)
     {
+        $url = "{$this->endpoint}/access_token";
         $query = new Query();
         $query->add('grant_type', 'password')
             ->add('user_id', $userId)
             ->add('password', $password)
             ->add('client_id', $this->client->getApiKey());
-        $jsonBody = $this->client->sendRequest('GET', $this->endpoint, $query);
+        $jsonBody = $this->client->sendRequest('GET', $url, $query);
         return new Auth($jsonBody);
     }
 }
