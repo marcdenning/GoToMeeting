@@ -6,7 +6,8 @@
 
 namespace kenobi883\GoToMeeting\Services;
 
-use \kenobi883\GoToMeeting\Models\Group;
+use kenobi883\GoToMeeting\Models\Group;
+use kenobi883\GoToMeeting\Models\Organizer;
 
 class GroupServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,6 +35,35 @@ class GroupServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($actualGroups);
         $this->assertNotNull($actualGroups[0]);
         $this->assertEquals($actualGroups[0], $expectedGroup);
+    }
+
+    public function testGetOrganizersByGroup()
+    {
+        $responseArray = array(
+            array(
+                'organizerkey' => 123456,
+                'groupkey' => 789,
+                'email' => 'test@test.com',
+                'firstname' => 'Test',
+                'lastname' => 'Test',
+                'groupname' => 'testgroup',
+                'status' => 'active',
+                'maxnumattendeesallowed' => 25
+            )
+        );
+        $expectedOrganizer = new Organizer($responseArray[0]);
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest')
+            ->will($this->returnValue($responseArray));
+        $groupService = new GroupService($client);
+        $organizers = $groupService->getOrganizersByGroup(789);
+        $this->assertNotEmpty($organizers);
+        $this->assertNotNull($organizers[0]);
+        $this->assertEquals($expectedOrganizer, $organizers[0]);
     }
 }
  
