@@ -7,8 +7,6 @@
 namespace kenobi883\GoToMeeting\Services;
 
 use GuzzleHttp\Query;
-use kenobi883\GoToMeeting\Client;
-use kenobi883\GoToMeeting\Models\Auth;
 use kenobi883\GoToMeeting\Models\Meeting;
 
 /**
@@ -18,6 +16,8 @@ use kenobi883\GoToMeeting\Models\Meeting;
  */
 class MeetingService extends AbstractService
 {
+    const DATE_FORMAT_INPUT = 'Y-m-d\TH:i:s\Z';
+
     /**
      * Retrieve a specific meeting from the API.
      *
@@ -57,8 +57,8 @@ class MeetingService extends AbstractService
             $endDate->setTimezone($utcTimeZone);
         }
 
-        $query->add('startDate', $startDate->format(\DateTime::ISO8601))
-            ->add('endDate', $endDate->format(\DateTime::ISO8601))
+        $query->add('startDate', $startDate->format(self::DATE_FORMAT_INPUT))
+            ->add('endDate', $endDate->format(self::DATE_FORMAT_INPUT))
             ->add('history', 'true');
 
         return $this->getMeetings($query);

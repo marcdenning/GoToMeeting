@@ -69,6 +69,31 @@ class Meeting implements \JsonSerializable
     private $maxParticipants;
 
     /**
+     * @var int
+     */
+    private $duration;
+
+    /**
+     * @var int
+     */
+    private $numberOfAttendees;
+
+    /**
+     * @var int
+     */
+    private $organizerKey;
+
+    /**
+     * @var int
+     */
+    private $meetingInstanceKey;
+
+    /**
+     * @var \DateTime
+     */
+    private $date;
+
+    /**
      * Constructor for a meeting.
      *
      * @param array $response optional response body data to populate model
@@ -255,6 +280,86 @@ class Meeting implements \JsonSerializable
     }
 
     /**
+     * @return int
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * @param int $duration
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfAttendees()
+    {
+        return $this->numberOfAttendees;
+    }
+
+    /**
+     * @param int $numberOfAttendees
+     */
+    public function setNumberOfAttendees($numberOfAttendees)
+    {
+        $this->numberOfAttendees = $numberOfAttendees;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMeetingInstanceKey()
+    {
+        return $this->meetingInstanceKey;
+    }
+
+    /**
+     * @param int $meetingInstanceKey
+     */
+    public function setMeetingInstanceKey($meetingInstanceKey)
+    {
+        $this->meetingInstanceKey = $meetingInstanceKey;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrganizerKey()
+    {
+        return $this->organizerKey;
+    }
+
+    /**
+     * @param int $organizerKey
+     */
+    public function setOrganizerKey($organizerKey)
+    {
+        $this->organizerKey = $organizerKey;
+    }
+
+    /**
      * Parse each known property into the model from an array of values.
      *
      * @param array $response
@@ -293,6 +398,21 @@ class Meeting implements \JsonSerializable
         }
         if (isset($response['maxParticipants'])) {
             $this->setMaxParticipants((int) $response['maxParticipants']);
+        }
+        if (isset($response['numAttendees'])) {
+            $this->setNumberOfAttendees((int) $response['numAttendees']);
+        }
+        if (isset($response['duration'])) {
+            $this->setDuration((int) $response['duration']);
+        }
+        if (isset($response['organizerkey'])) {
+            $this->setOrganizerKey((int) $response['organizerkey']);
+        }
+        if (isset($response['meetingInstanceKey'])) {
+            $this->setMeetingInstanceKey((int) $response['meetingInstanceKey']);
+        }
+        if (isset($response['date'])) {
+            $this->setDate(new \DateTime($response['date']));
         }
     }
 
