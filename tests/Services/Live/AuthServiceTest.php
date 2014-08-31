@@ -19,12 +19,15 @@ class AuthServiceTest extends LiveServiceTestCase
 
     public function __construct()
     {
+        parent::__construct();
         $this->liveCredentials = array(
             'apiKey' => '',
             'userId' => '',
             'password' => ''
         );
-        parent::__construct();
+        if (strlen($this->liveCredentials['apiKey']) > 0) {
+            $this->client = $this->configureLiveClient($this->liveCredentials);
+        }
     }
 
     protected function setUp()

@@ -18,13 +18,14 @@ class GroupServiceTest extends LiveServiceTestCase
 
     public function __construct()
     {
-        $this->liveCredentials = array(
+        parent::__construct();
+        $liveCredentials = array(
             'apiKey' => '',
             'userId' => '',
             'password' => ''
         );
-        parent::__construct();
-        if (strlen($this->liveCredentials['apiKey']) > 0) {
+        if (strlen($liveCredentials['apiKey']) > 0) {
+            $this->client = $this->configureLiveClient($liveCredentials);
             $this->groupService = new GroupService($this->client);
         }
     }

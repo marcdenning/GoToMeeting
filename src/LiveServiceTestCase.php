@@ -16,30 +16,19 @@ abstract class LiveServiceTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $client;
 
-    /**
-     * @var array
-     */
-    protected $liveCredentials = array(
-        'apiKey' => '',
-        'userId' => '',
-        'password' => ''
-    );
-
-    public function __construct()
-    {
-        parent::__construct();
-        if (strlen($this->liveCredentials['apiKey']) > 0) {
-            $this->client = new Client($this->liveCredentials['apiKey']);
-            $authService = new AuthService($this->client);
-            $auth = $authService->authenticate($this->liveCredentials['userId'], $this->liveCredentials['password']);
-            $this->client->setAuth($auth);
-        }
-    }
-
     protected function setUp()
     {
         if (!isset($this->client)) {
             $this->markTestSkipped('Cannot run live test: No credentials available.');
         }
+    }
+
+    protected function configureLiveClient($liveCredentials)
+    {
+        $client = new Client($liveCredentials['apiKey']);
+        $authService = new AuthService($client);
+        $auth = $authService->authenticate($liveCredentials['userId'], $liveCredentials['password']);
+        $client->setAuth($auth);
+        return $client;
     }
 }
