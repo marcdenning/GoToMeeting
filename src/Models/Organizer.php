@@ -18,7 +18,7 @@ class Organizer implements \JsonSerializable
     private $organizerKey;
 
     /**
-     * @var string
+     * @var int
      */
     private $groupKey;
 
@@ -95,7 +95,7 @@ class Organizer implements \JsonSerializable
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getGroupKey()
     {
@@ -103,7 +103,7 @@ class Organizer implements \JsonSerializable
     }
 
     /**
-     * @param string $groupKey
+     * @param int $groupKey
      */
     public function setGroupKey($groupKey)
     {
