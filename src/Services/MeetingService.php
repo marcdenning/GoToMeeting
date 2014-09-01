@@ -77,6 +77,30 @@ class MeetingService extends AbstractService
     }
 
     /**
+     * @param Meeting $meeting
+     * @return Meeting
+     */
+    public function createMeeting(Meeting $meeting)
+    {
+        $meetingArray = $meeting->toArrayForApi();
+        $jsonBody = $this->client->sendRequest('POST', 'meetings', null, false, $meetingArray);
+
+        // Merge attributes returned in response to existing Meeting instance
+        $meeting->parseFromJson($jsonBody[0]);
+        return $meeting;
+    }
+
+    /**
+     * Delete the specified meeting.
+     *
+     * @param int $meetingId
+     */
+    public function deleteMeeting($meetingId)
+    {
+        $this->client->sendRequest('DELETE', "meetings/{$meetingId}");
+    }
+
+    /**
      * Retrieve a set of meetings using the specified query parameters.
      *
      * @param \GuzzleHttp\Query $query

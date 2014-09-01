@@ -7,6 +7,8 @@
 namespace kenobi883\GoToMeeting\Models;
 
 
+use Carbon\Carbon;
+
 class MeetingTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -76,7 +78,16 @@ class MeetingTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('subject', $meetingJson);
         $this->assertContains($meetingObject->getSubject(), $meetingJson);
     }
-    
+
+    /**
+     * @dataProvider createMeetingProvider
+     */
+    public function testToArrayForApi($meeting, $jsonArray)
+    {
+        $actualJsonArray = $meeting->toArrayForApi();
+        $this->assertEquals($jsonArray, $actualJsonArray);
+    }
+
     public function futureMeetingProvider()
     {
         $responseArray = array(
@@ -114,6 +125,32 @@ class MeetingTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 $responseArray
+            )
+        );
+    }
+
+    public function createMeetingProvider()
+    {
+        $jsonArray = array(
+            'subject' => 'test',
+            'starttime' => '2011-12-01T09:00:00Z',
+            'endtime' => '2012-11-01T10:00:00Z',
+            'passwordrequired' => 'false',
+            'conferencecallinfo' => 'Hybrid',
+            'timezonekey' => '',
+            'meetingtype' => 'Scheduled'
+        );
+        $meeting = new Meeting();
+        $meeting->setSubject($jsonArray['subject']);
+        $meeting->setStartTime(new Carbon($jsonArray['starttime']));
+        $meeting->setEndTime(new Carbon($jsonArray['endtime']));
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo($jsonArray['conferencecallinfo']);
+        $meeting->setMeetingType($jsonArray['meetingtype']);
+        return array(
+            array(
+                $meeting,
+                $jsonArray
             )
         );
     }

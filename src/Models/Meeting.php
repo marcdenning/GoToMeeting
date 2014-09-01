@@ -5,6 +5,7 @@
  */
 
 namespace kenobi883\GoToMeeting\Models;
+use kenobi883\GoToMeeting\Services\MeetingService;
 
 /**
  * Class Meeting
@@ -13,6 +14,16 @@ namespace kenobi883\GoToMeeting\Models;
  */
 class Meeting implements \JsonSerializable
 {
+    const TYPE_IMMEDIATE = 'Immediate';
+    const TYPE_SCHEDULED = 'Scheduled';
+    const TYPE_RECURRING = 'Recurring';
+
+    const CONFERENCE_CALL_PSTN = 'PSTN';
+    const CONFERENCE_CALL_FREE = 'Free';
+    const CONFERENCE_CALL_HYBRID = 'Hybrid';
+    const CONFERENCE_CALL_PRIVATE = 'Private';
+    const CONFERENCE_CALL_VOIP = 'VoIP';
+
     /**
      * @var int
      */
@@ -92,6 +103,11 @@ class Meeting implements \JsonSerializable
      * @var \DateTime
      */
     private $date;
+
+    /**
+     * @var string
+     */
+    private $joinUrl;
 
     /**
      * Constructor for a meeting.
@@ -360,6 +376,22 @@ class Meeting implements \JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getJoinUrl()
+    {
+        return $this->joinUrl;
+    }
+
+    /**
+     * @param string $joinUrl
+     */
+    public function setJoinUrl($joinUrl)
+    {
+        $this->joinUrl = $joinUrl;
+    }
+
+    /**
      * Parse each known property into the model from an array of values.
      *
      * @param array $response
@@ -371,6 +403,9 @@ class Meeting implements \JsonSerializable
         }
         if (isset($response['meetingId'])) {
             $this->setMeetingId((int) $response['meetingId']);
+        }
+        if (isset($response['meetingid'])) {
+            $this->setMeetingId((int) $response['meetingid']);
         }
         if (isset($response['createTime'])) {
             $this->setCreateTime(new \DateTime($response['createTime']));
@@ -414,6 +449,9 @@ class Meeting implements \JsonSerializable
         if (isset($response['date'])) {
             $this->setDate(new \DateTime($response['date']));
         }
+        if (isset($response['joinURL'])) {
+            $this->setJoinUrl($response['joinURL']);
+        }
     }
 
     /**
@@ -426,5 +464,23 @@ class Meeting implements \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * Construct a representation specific for passing *into* the API and encode as JSON.
+     *
+     * @return array value of the meeting for sending to the API
+     */
+    public function toArrayForApi()
+    {
+        $meetingArray = array();
+        $meetingArray['subject'] = $this->getSubject();
+        $meetingArray['starttime'] = $this->getStartTime()->format(MeetingService::DATE_FORMAT_INPUT);
+        $meetingArray['endtime'] = $this->getEndTime()->format(MeetingService::DATE_FORMAT_INPUT);
+        $meetingArray['passwordrequired'] = $this->getPasswordRequired() ? 'true' : 'false';
+        $meetingArray['conferencecallinfo'] = $this->getConferenceCallInfo();
+        $meetingArray['timezonekey'] = ''; // Deprecated API parameter, but required to be provided as blank string
+        $meetingArray['meetingtype'] = $this->getMeetingType();
+        return $meetingArray;
     }
 }

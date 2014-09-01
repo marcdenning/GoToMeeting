@@ -8,6 +8,7 @@ namespace kenobi883\GoToMeeting\Services\Live;
 
 use Carbon\Carbon;
 use kenobi883\GoToMeeting\LiveServiceTestCase;
+use kenobi883\GoToMeeting\Models\Meeting;
 use kenobi883\GoToMeeting\Services\MeetingService;
 
 class MeetingServiceTest extends LiveServiceTestCase
@@ -37,7 +38,6 @@ class MeetingServiceTest extends LiveServiceTestCase
         $this->assertNotEmpty($meetings);
         $actualMeeting = $meetings[0];
         $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
-        $this->assertAttributeContains('scheduled', 'meetingType', $actualMeeting, null, true);
     }
 
     public function testGetHistoricalMeetings()
@@ -52,6 +52,52 @@ class MeetingServiceTest extends LiveServiceTestCase
         $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
         $actualDate = Carbon::instance($actualMeeting->getDate());
         $this->assertTrue($actualDate->between($startDate, $endDate));
+    }
+
+    public function testCreateMeeting()
+    {
+        $meeting = new Meeting();
+        $meeting->setSubject('test');
+        $meeting->setStartTime(Carbon::now('UTC')->addHour());
+        $meeting->setEndTime(Carbon::now('UTC')->addHours(2));
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
+        $meeting->setMeetingType(Meeting::TYPE_IMMEDIATE);
+        $actualMeeting = $this->meetingService->createMeeting($meeting);
+        $this->assertNotNull($actualMeeting);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
+        $this->assertObjectHasAttribute('joinUrl', $actualMeeting);
+        $this->assertAttributeNotEmpty('joinUrl', $actualMeeting);
+        $this->assertObjectHasAttribute('meetingId', $actualMeeting);
+        $this->assertAttributeNotEmpty('meetingId', $actualMeeting);
+        return $actualMeeting;
+    }
+
+    /**
+     * @depends testCreateMeeting
+     */
+    public function testDeleteMeeting($meeting)
+    {
+        $meetingId = $meeting->getMeetingId();
+        $this->meetingService->deleteMeeting($meetingId);
+        $this->setExpectedException('\GuzzleHttp\Exception\ClientException');
+        $this->meetingService->getMeeting($meetingId);
+    }
+
+    public function createMeetingProvider()
+    {
+        $meeting = new Meeting();
+        $meeting->setSubject('test');
+        $meeting->setStartTime(Carbon::now('UTC'));
+        $meeting->setEndTime(Carbon::now('UTC')->addHour());
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
+        $meeting->setMeetingType(Meeting::TYPE_IMMEDIATE);
+        return array(
+            array(
+                $meeting
+            )
+        );
     }
 }
  

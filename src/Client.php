@@ -5,6 +5,7 @@
  */
 
 namespace kenobi883\GoToMeeting;
+use GuzzleHttp\Query;
 
 /**
  * Class Client
@@ -96,29 +97,37 @@ class Client
     /**
      * Handle sending requests to the API. All responses returned as JSON.
      *
+     * Request body sent as JSON.
+     *
      * @param string $method HTTP method for the request
      * @param string $path relative URL to append to the root API endpoint
      * @param \GuzzleHttp\Query $query optional data to send along with request
      * @param bool $isAuthRequest optional flag to not pass the OAuth token with request
      *  because we do not have it yet
+     * @param array $postBody body content for a POST or PUT request
      * @return mixed
      */
-    public function sendRequest($method, $path, $query = null, $isAuthRequest = false)
+    public function sendRequest($method, $path, Query $query = null, $isAuthRequest = false, $postBody = null)
     {
         $guzzleClient = $this->getGuzzleClient();
-        $request = $guzzleClient->createRequest($method, $path);
-        $request->addHeaders(array(
-            'Accept' => 'application/json',
-            'Content-type' => 'application/json'
-        ));
+        $options = array(
+            'headers' => array(
+                'Accept' => 'application/json',
+                'Content-type' => 'application/json'
+            )
+        );
         if (!$isAuthRequest && isset($this->auth)) {
             $accessToken = $this->auth->getAccessToken();
-            $request->addHeader('Authorization', "OAuth oauth_token={$accessToken}");
-            $request->setPath("G2M/rest/{$path}");
+            $options['headers']['Authorization'] = "OAuth oauth_token={$accessToken}";
+            $path = "G2M/rest/{$path}";
         }
         if ($query != null) {
-            $request->setQuery($query);
+            $options['query'] = $query;
         }
+        if ($postBody != null && ($method == 'POST' || $method == 'PUT')) {
+            $options['json'] = $postBody;
+        }
+        $request = $guzzleClient->createRequest($method, $path, $options);
         $response = $guzzleClient->send($request);
         return $response->json();
     }

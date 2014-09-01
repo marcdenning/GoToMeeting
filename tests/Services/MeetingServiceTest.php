@@ -7,6 +7,7 @@
 namespace kenobi883\GoToMeeting\Services;
 
 
+use Carbon\Carbon;
 use kenobi883\GoToMeeting\Models\Meeting;
 
 class MeetingServiceTest extends \PHPUnit_Framework_TestCase
@@ -97,6 +98,43 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMeeting, $actualMeeting);
     }
 
+    /**
+     * @dataProvider createMeetingProvider
+     */
+    public function testCreateMeeting($meeting, $responseArray)
+    {
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest')
+            ->will($this->returnValue($responseArray));
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->equalTo('POST'));
+        $meetingService = new MeetingService($client);
+        $actualMeeting = $meetingService->createMeeting($meeting);
+        $this->assertNotNull($actualMeeting);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
+        $this->assertObjectHasAttribute('joinUrl', $actualMeeting);
+    }
+
+    public function testDeleteMeeting()
+    {
+        $meetingId = 123456;
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->equalTo('DELETE'));
+        $meetingService = new MeetingService($client);
+        $meetingService->deleteMeeting($meetingId);
+    }
+
     public function singleMeetingProvider()
     {
         $responseArray = array(
@@ -117,6 +155,32 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
             array(
                 $responseArray,
                 $expectedMeeting
+            )
+        );
+    }
+
+    public function createMeetingProvider()
+    {
+        $meeting = new Meeting();
+        $meeting->setSubject('test');
+        $meeting->setStartTime(Carbon::now('UTC'));
+        $meeting->setEndTime(Carbon::now('UTC')->addHour());
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
+        $meeting->setMeetingType(Meeting::TYPE_IMMEDIATE);
+        $responseArray = array(
+            array(
+                'joinURL' => 'https://www3.gotomeeting.com/join/762836476',
+                'maxParticipants' => 26,
+                'uniqueMeetingId' => 200000000212521696,
+                'conferenceCallInfo' => 'Australia: +61 2 8355 0000\nCanada: +1 (416) 900-1111\nUnited Kingdom: +44 (0) 203 535 0000\nIreland: +353 (0) 14 000 976\nUnited States: +1 (786) 358-0000\nAccess Code: 762-836-476',
+                'meetingid' => 762836476
+            )
+        );
+        return array(
+            array(
+                $meeting,
+                $responseArray
             )
         );
     }
