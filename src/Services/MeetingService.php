@@ -101,6 +101,18 @@ class MeetingService extends AbstractService
     }
 
     /**
+     * Update the provided meeting with set values.
+     *
+     * @param Meeting $meeting
+     */
+    public function updateMeeting(Meeting $meeting)
+    {
+        $meetingId = $meeting->getMeetingId();
+        $meetingArray = $meeting->toArrayForApi();
+        $this->client->sendRequest('PUT', "meetings/{$meetingId}", null, false, $meetingArray);
+    }
+
+    /**
      * Retrieve a set of meetings using the specified query parameters.
      *
      * @param \GuzzleHttp\Query $query

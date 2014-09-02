@@ -88,6 +88,15 @@ class MeetingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($jsonArray, $actualJsonArray);
     }
 
+    /**
+     * @dataProvider updateMeetingProvider
+     */
+    public function testToArrayForApiUpdate($meeting, $jsonArray)
+    {
+        $actualJsonArray = $meeting->toArrayForApi();
+        $this->assertEquals($jsonArray, $actualJsonArray);
+    }
+
     public function futureMeetingProvider()
     {
         $responseArray = array(
@@ -151,6 +160,54 @@ class MeetingTest extends \PHPUnit_Framework_TestCase
             array(
                 $meeting,
                 $jsonArray
+            )
+        );
+    }
+
+    public function updateMeetingProvider()
+    {
+        $jsonArray = array(
+            'subject' => 'test',
+            'starttime' => '2011-12-01T09:00:00Z',
+            'endtime' => '2012-11-01T10:00:00Z',
+            'passwordrequired' => 'false',
+            'conferencecallinfo' => 'Hybrid',
+            'timezonekey' => '',
+            'meetingtype' => 'Scheduled',
+        );
+        $meeting = new Meeting();
+        $meeting->setSubject($jsonArray['subject']);
+        $meeting->setStartTime(new Carbon($jsonArray['starttime']));
+        $meeting->setEndTime(new Carbon($jsonArray['endtime']));
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo($jsonArray['conferencecallinfo']);
+        $meeting->setMeetingType($jsonArray['meetingtype']);
+        $recurringJsonArray = array(
+            'subject' => 'test',
+            'starttime' => '2011-12-01T09:00:00Z',
+            'endtime' => '2012-11-01T10:00:00Z',
+            'passwordrequired' => 'false',
+            'conferencecallinfo' => 'Hybrid',
+            'timezonekey' => '',
+            'meetingtype' => 'Recurring',
+            'uniquemeetinginstance' => 1230000000456789
+        );
+        $recurringMeeting = new Meeting();
+        $recurringMeeting->setSubject($recurringJsonArray['subject']);
+        $recurringMeeting->setStartTime(new Carbon($recurringJsonArray['starttime']));
+        $recurringMeeting->setEndTime(new Carbon($recurringJsonArray['endtime']));
+        $recurringMeeting->setPasswordRequired(false);
+        $recurringMeeting->setConferenceCallInfo($recurringJsonArray['conferencecallinfo']);
+        $recurringMeeting->setMeetingType($recurringJsonArray['meetingtype']);
+        $recurringMeeting->setUniqueMeetingId($recurringJsonArray['uniquemeetinginstance']);
+        return array(
+            array(
+                $meeting,
+                $jsonArray
+            ),
+            array(
+                $recurringMeeting,
+                $recurringJsonArray
             )
         );
     }

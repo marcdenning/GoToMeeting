@@ -481,6 +481,9 @@ class Meeting implements \JsonSerializable
         $meetingArray['conferencecallinfo'] = $this->getConferenceCallInfo();
         $meetingArray['timezonekey'] = ''; // Deprecated API parameter, but required to be provided as blank string
         $meetingArray['meetingtype'] = $this->getMeetingType();
+        if ($this->getMeetingType() == self::TYPE_RECURRING) {
+            $meetingArray['uniquemeetinginstance'] = $this->getUniqueMeetingId();
+        }
         return $meetingArray;
     }
 }

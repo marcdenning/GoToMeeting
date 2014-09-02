@@ -76,7 +76,21 @@ class MeetingServiceTest extends LiveServiceTestCase
     /**
      * @depends testCreateMeeting
      */
-    public function testDeleteMeeting($meeting)
+    public function testUpdateMeeting(Meeting $meeting)
+    {
+        $modifiedSubject = 'test modified';
+        $meeting->setSubject($modifiedSubject);
+        $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
+        $this->meetingService->updateMeeting($meeting);
+        $actualMeeting = $this->meetingService->getMeeting($meeting->getMeetingId());
+        $this->assertAttributeContains($modifiedSubject, 'subject', $actualMeeting);
+        return $meeting;
+    }
+
+    /**
+     * @depends testUpdateMeeting
+     */
+    public function testDeleteMeeting(Meeting $meeting)
     {
         $meetingId = $meeting->getMeetingId();
         $this->meetingService->deleteMeeting($meetingId);
@@ -92,7 +106,7 @@ class MeetingServiceTest extends LiveServiceTestCase
         $meeting->setEndTime(Carbon::now('UTC')->addHour());
         $meeting->setPasswordRequired(false);
         $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
-        $meeting->setMeetingType(Meeting::TYPE_IMMEDIATE);
+        $meeting->setMeetingType(Meeting::TYPE_SCHEDULED);
         return array(
             array(
                 $meeting

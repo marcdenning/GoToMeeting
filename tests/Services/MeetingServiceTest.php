@@ -135,6 +135,24 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
         $meetingService->deleteMeeting($meetingId);
     }
 
+    /**
+     * @dataProvider updateMeetingProvider
+     */
+    public function testUpdateMeeting($meeting)
+    {
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest');
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->equalTo('PUT'));
+        $meetingService = new MeetingService($client);
+        $meetingService->updateMeeting($meeting);
+    }
+
     public function singleMeetingProvider()
     {
         $responseArray = array(
@@ -181,6 +199,22 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
             array(
                 $meeting,
                 $responseArray
+            )
+        );
+    }
+
+    public function updateMeetingProvider()
+    {
+        $meeting = new Meeting();
+        $meeting->setSubject('test');
+        $meeting->setStartTime(Carbon::now('UTC'));
+        $meeting->setEndTime(Carbon::now('UTC')->addHour());
+        $meeting->setPasswordRequired(false);
+        $meeting->setConferenceCallInfo(Meeting::CONFERENCE_CALL_HYBRID);
+        $meeting->setMeetingType(Meeting::TYPE_IMMEDIATE);
+        return array(
+            array(
+                $meeting
             )
         );
     }
