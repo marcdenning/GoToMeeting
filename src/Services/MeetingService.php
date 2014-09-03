@@ -113,6 +113,18 @@ class MeetingService extends AbstractService
     }
 
     /**
+     * Retrieve the join URL for the given meeting.
+     *
+     * @param int $meetingId
+     * @return string
+     */
+    public function startMeeting($meetingId)
+    {
+        $responseArray = $this->client->sendRequest('GET', "meetings/{$meetingId}/start");
+        return $responseArray['hostURL'];
+    }
+
+    /**
      * Retrieve a set of meetings using the specified query parameters.
      *
      * @param \GuzzleHttp\Query $query

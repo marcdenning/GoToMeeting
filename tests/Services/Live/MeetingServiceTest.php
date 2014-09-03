@@ -89,6 +89,16 @@ class MeetingServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
     }
 
     /**
+     * @depends testCreateMeeting
+     */
+    public function testStartMeeting(Meeting $meeting)
+    {
+        $meetingId = $meeting->getMeetingId();
+        $hostURL = $this->meetingService->startMeeting($meetingId);
+        $this->assertContains($meetingId, $hostURL);
+    }
+
+    /**
      * @depends testUpdateMeeting
      */
     public function testDeleteMeeting(Meeting $meeting)

@@ -153,6 +153,29 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
         $meetingService->updateMeeting($meeting);
     }
 
+    public function testStartMeeting()
+    {
+        $meetingId = 123456789;
+        $responseArray = array(
+            'hostURL' => 'https://downloadstage.citrixonline.com/download.html?startMode=Join&meetingId=123456789&authenticationToken=3A2000000000751489513AtCz8cVV4cqDTvQzRuGe4zQT5&runMode=Normal&displayMode=Join&locale=en_US&buildNumber=977&egwHostname=egwstage.gotomeeting.com&egwPort=80&egwPort=443&egwPort=8200&egwIp=216.219.121.194%2C216.219.121.224&productName=g2m&productType=g2m&theme=g2m'
+        );
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest')
+            ->will($this->returnValue($responseArray));
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->equalTo('GET'),
+                $this->stringEndsWith('start')
+            );
+        $meetingService = new MeetingService($client);
+        $hostURL = $meetingService->startMeeting($meetingId);
+        $this->assertEquals($responseArray['hostURL'], $hostURL);
+    }
+
     public function singleMeetingProvider()
     {
         $responseArray = array(
