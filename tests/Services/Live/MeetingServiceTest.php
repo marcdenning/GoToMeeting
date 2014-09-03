@@ -7,11 +7,12 @@
 namespace kenobi883\GoToMeeting\Services\Live;
 
 use Carbon\Carbon;
-use kenobi883\GoToMeeting\LiveServiceTestCase;
 use kenobi883\GoToMeeting\Models\Meeting;
 use kenobi883\GoToMeeting\Services\MeetingService;
 
-class MeetingServiceTest extends LiveServiceTestCase
+require_once(__DIR__ . '/../../LiveServiceTestCase.php');
+
+class MeetingServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
 {
     /**
      * @var \kenobi883\GoToMeeting\Services\MeetingService

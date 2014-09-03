@@ -7,10 +7,11 @@
 namespace kenobi883\GoToMeeting\Services\Live;
 
 
-use kenobi883\GoToMeeting\LiveServiceTestCase;
 use kenobi883\GoToMeeting\Services\AuthService;
 
-class AuthServiceTest extends LiveServiceTestCase
+require_once(__DIR__ . '/../../LiveServiceTestCase.php');
+
+class AuthServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
 {
     /**
      * @var \kenobi883\GoToMeeting\Services\GroupService
