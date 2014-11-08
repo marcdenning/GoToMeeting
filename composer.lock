@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "960462ec8f7acf002ace4c1180ceca2c",
+    "hash": "5512af682ac46602a91337257658b8fa",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -123,51 +123,6 @@
                 "stream"
             ],
             "time": "2014-08-10 23:57:01"
-        },
-        {
-            "name": "kamermans/guzzle4-oauth2-subscriber",
-            "version": "v0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kamermans/guzzle4-oauth2-subscriber.git",
-                "reference": "3c3b78f012c0428bc0d4323124a24d69933eae17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kamermans/guzzle4-oauth2-subscriber/zipball/3c3b78f012c0428bc0d4323124a24d69933eae17",
-                "reference": "3c3b78f012c0428bc0d4323124a24d69933eae17",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "4.*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "kamermans\\GuzzleOAuth2": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Steve Kamerman"
-                }
-            ],
-            "description": "OAuth2 authentication and reauthorization for Guzzle 4.x",
-            "keywords": [
-                "Guzzle",
-                "guzzle4",
-                "oauth",
-                "oauth2",
-                "provider",
-                "subscriber"
-            ],
-            "time": "2014-08-19 21:40:55"
         }
     ],
     "packages-dev": [
