@@ -106,6 +106,7 @@ class Client
      *  because we do not have it yet
      * @param array $postBody body content for a POST or PUT request
      * @return mixed
+     * @throws \GuzzleHttp\Exception\RequestException
      */
     public function sendRequest($method, $path, Query $query = null, $isAuthRequest = false, $postBody = null)
     {
