@@ -6,6 +6,7 @@
 
 namespace kenobi883\GoToMeeting;
 use GuzzleHttp\Query;
+use kenobi883\GoToMeeting\Models\Auth;
 
 /**
  * Class Client
@@ -37,13 +38,22 @@ class Client
      * Default constructor.
      *
      * Configures the client for authenticating.
+     *
+     * @param string $apiKey client ID or API key
+     * @param string|null $accessToken optionally provide an obtained OAuth access token
+     *   to configure the auth property
      */
-    public function __construct($apiKey)
+    public function __construct($apiKey, $accessToken = NULL)
     {
         $this->apiKey = $apiKey;
         $this->guzzleClient = new \GuzzleHttp\Client(array(
             'base_url' => $this->endpoint
         ));
+        if ($accessToken !== NULL) {
+            $auth = new Auth();
+            $auth->setAccessToken($accessToken);
+            $this->setAuth($auth);
+        }
     }
 
     /**
