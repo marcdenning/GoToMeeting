@@ -53,6 +53,11 @@ class Organizer implements \JsonSerializable
     private $maximumAttendeesAllowed;
 
     /**
+     * @var string
+     */
+    private $productType;
+
+    /**
      * Default constructor. Parse provided response from JSON.
      *
      * @param array $response optional parameter to pass in initial values (as if from a JSON response)
@@ -191,6 +196,22 @@ class Organizer implements \JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getProductType()
+    {
+        return $this->productType;
+    }
+
+    /**
+     * @param string $productType
+     */
+    public function setProductType($productType)
+    {
+        $this->productType = $productType;
+    }
+
+    /**
      * Parse each known property into the model from an array of values.
      *
      * @param array $response values from JSON representation of object
@@ -221,6 +242,9 @@ class Organizer implements \JsonSerializable
         if (isset($response['maxnumattendeesallowed'])) {
             $this->setMaximumAttendeesAllowed($response['maxnumattendeesallowed']);
         }
+        if (isset($response['productType'])) {
+            $this->setProductType($response['productType']);
+        }
     }
 
     /**
@@ -233,5 +257,21 @@ class Organizer implements \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * Build array representation for sending in request bodies to the API.
+     *
+     * @return array specific formatting for use in a request body
+     */
+    public function toArrayForApi()
+    {
+        $organizerArray = array();
+
+        $organizerArray['firstName'] = $this->getFirstName();
+        $organizerArray['lastName'] = $this->getLastName();
+        $organizerArray['organizerEmail'] = $this->getEmail();
+        $organizerArray['productType'] = $this->getProductType();
+        return $organizerArray;
     }
 }

@@ -52,6 +52,21 @@ class GroupService extends AbstractService
     }
 
     /**
+     * Create a new organizer in the specified group.
+     *
+     * @param int $groupKey
+     * @param Organizer $organizer
+     * @return Organizer with organizer key specified
+     */
+    public function createOrganizer($groupKey, Organizer $organizer)
+    {
+        $url = "{$this->endpoint}/{$groupKey}/organizers";
+        $jsonBody = $this->client->sendRequest('POST', $url, null, false, $organizer->toArrayForApi());
+        $organizer->setOrganizerKey($jsonBody);
+        return $organizer;
+    }
+
+    /**
      * Get historical or scheduled meetings by group.
      *
      * @param string $groupKey

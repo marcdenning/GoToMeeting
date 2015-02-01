@@ -7,6 +7,7 @@
 namespace kenobi883\GoToMeeting\Services\Live;
 
 
+use kenobi883\GoToMeeting\Models\Organizer;
 use kenobi883\GoToMeeting\Services\OrganizerService;
 
 require_once(__DIR__ . '/../../LiveServiceTestCase.php');
@@ -60,5 +61,14 @@ class OrganizerServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
         $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Organizer', $organizers[0]);
         $this->assertEquals($groupKey, $actualOrganizerGroupKey);
     }
+
+    public function testCreateOrganizer($groupKey, Organizer $organizer)
+    {
+        $actualOrganizer = $this->organizerService->createOrganizer($groupKey, $organizer);
+        $this->assertNotNull($actualOrganizer);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Organizer', $actualOrganizer);
+        $this->assertAttributeNotEmpty('organizerKey', $actualOrganizer);
+    }
+
 }
  

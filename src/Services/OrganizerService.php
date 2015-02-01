@@ -61,4 +61,53 @@ class OrganizerService extends AbstractService
         $groupService = new GroupService($this->client);
         return $groupService->getOrganizersByGroup($groupKey);
     }
+
+    /**
+     * Create a new organizer in the specified group.
+     *
+     * @param int $groupKey
+     * @param Organizer $organizer
+     * @return Organizer with organizer key set from response
+     */
+    public function createOrganizer($groupKey, Organizer $organizer)
+    {
+        $groupService = new GroupService($this->client);
+        return $groupService->createOrganizer($groupKey, $organizer);
+    }
+
+    /**
+     * Delete the organizer specified by the given key.
+     *
+     * @param int $organizerKey
+     */
+    public function deleteOrganizer($organizerKey)
+    {
+        $this->client->sendRequest('DELETE', "{$this->endpoint}/{$organizerKey}");
+    }
+
+    /**
+     * Delete the organizer specified by the given email address.
+     *
+     * @param string $email
+     */
+    public function deleteOrganizerByEmail($email)
+    {
+        $query = new Query();
+        $query->add('email', $email);
+        $this->client->sendRequest('DELETE', $this->endpoint, $query);
+    }
+
+    /**
+     * Update the organizer status to `active` or `suspended`.
+     *
+     * @param int $organizerKey
+     * @param bool $isActive true to activate the organizer, false to suspend the organizer
+     */
+    public function updateOrganizerStatus($organizerKey, $isActive = true)
+    {
+        $requestBody = array(
+            'status' => $isActive ? 'active' : 'suspended'
+        );
+        $this->client->sendRequest('PUT', "{$this->endpoint}/{$organizerKey}", null, false, $requestBody);
+    }
 }
