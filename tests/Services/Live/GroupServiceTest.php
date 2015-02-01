@@ -37,5 +37,25 @@ class GroupServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
         $this->assertNotEmpty($groups);
         $this->assertInstanceOf('Group', $groups[0]);
     }
+
+    /**
+     * @dataProvider groupKey
+     */
+    public function testGetScheduledMeetings($groupKey)
+    {
+        $meetings = $this->groupService->getMeetingsByGroup($groupKey);
+        $this->assertNotEmpty($meetings);
+        $actualMeeting = $meetings[0];
+        $this->assertNotNull($actualMeeting);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
+        $this->assertAttributeNotEmpty('groupName', $actualMeeting);
+    }
+
+    public function groupKey()
+    {
+        return array(
+            array('input id here')
+        );
+    }
 }
  

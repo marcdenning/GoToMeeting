@@ -110,6 +110,11 @@ class Meeting implements \JsonSerializable
     private $joinUrl;
 
     /**
+     * @var string
+     */
+    private $groupName;
+
+    /**
      * Constructor for a meeting.
      *
      * @param array $response optional response body data to populate model
@@ -392,6 +397,22 @@ class Meeting implements \JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getGroupName()
+    {
+        return $this->groupName;
+    }
+
+    /**
+     * @param string $groupName
+     */
+    public function setGroupName($groupName)
+    {
+        $this->groupName = $groupName;
+    }
+
+    /**
      * Parse each known property into the model from an array of values.
      *
      * @param array $response
@@ -451,6 +472,9 @@ class Meeting implements \JsonSerializable
         }
         if (isset($response['joinURL'])) {
             $this->setJoinUrl($response['joinURL']);
+        }
+        if (isset($response['groupName'])) {
+            $this->setGroupName($response['groupName']);
         }
     }
 

@@ -50,12 +50,8 @@ class MeetingService extends AbstractService
 
         // Adjust start and end dates to the UTC timezone if provided
         $utcTimeZone = new \DateTimeZone('UTC');
-        if ($startDate !== null) {
-            $startDate->setTimezone($utcTimeZone);
-        }
-        if ($endDate !== null) {
-            $endDate->setTimezone($utcTimeZone);
-        }
+        $startDate->setTimezone($utcTimeZone);
+        $endDate->setTimezone($utcTimeZone);
 
         $query->add('startDate', $startDate->format(self::DATE_FORMAT_INPUT))
             ->add('endDate', $endDate->format(self::DATE_FORMAT_INPUT))
