@@ -6,6 +6,8 @@
 namespace kenobi883\GoToMeeting\Services;
 
 use GuzzleHttp\Query;
+use kenobi883\GoToMeeting\Models\Attendee;
+use kenobi883\GoToMeeting\Models\Meeting;
 use kenobi883\GoToMeeting\Models\Organizer;
 
 /**
@@ -109,5 +111,33 @@ class OrganizerService extends AbstractService
             'status' => $isActive ? 'active' : 'suspended'
         );
         $this->client->sendRequest('PUT', "{$this->endpoint}/{$organizerKey}", null, false, $requestBody);
+    }
+
+    /**
+     * Get all attendee information for the specified organizer during the specified date range.
+     *
+     * @param string $organizerKey
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @return array includes `meetings` and `attendees` keys mapping to arrays of the Meeting and Attendee
+     *  instances returned from the API
+     */
+    public function getAttendeesByOrganizer($organizerKey, \DateTime $startDate, \DateTime $endDate)
+    {
+        $url = "{$this->endpoint}/{$organizerKey}/attendees";
+        $query = new Query();
+        $query->add('startDate', $startDate->format(MeetingService::DATE_FORMAT_INPUT))
+            ->add('endDate', $endDate->format(MeetingService::DATE_FORMAT_INPUT));
+        $jsonBody = $this->client->sendRequest('GET', $url, $query);
+        $meetings = array();
+        $attendees = array();
+        foreach ($jsonBody as $meetingAttendee) {
+            $meetings[] = new Meeting($meetingAttendee);
+            $attendees[] = new Attendee($meetingAttendee);
+        }
+        return array(
+            'meetings' => $meetings,
+            'attendees' => $attendees
+        );
     }
 }

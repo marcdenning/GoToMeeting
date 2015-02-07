@@ -176,6 +176,38 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($responseArray['hostURL'], $hostURL);
     }
 
+    /**
+     * @dataProvider attendeesByMeetingProvider
+     */
+    public function testGetAttendeesByMeeting($meetingInstanceKey, \DateTime $startDate, \DateTime $endDate, $responseArray)
+    {
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest')
+            ->will($this->returnValue(array(
+                $responseArray
+            )));
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->stringContains('GET', false),
+                $this->stringContains("meetings/{$meetingInstanceKey}/attendees"),
+                $this->attributeEqualTo('data', array(
+                    'startDate' => $startDate->format(MeetingService::DATE_FORMAT_INPUT),
+                    'endDate' => $endDate->format(MeetingService::DATE_FORMAT_INPUT)
+                )));
+        $groupService = new MeetingService($client);
+        $actualResponse = $groupService->getAttendeesByMeeting($meetingInstanceKey, $startDate, $endDate);
+        $this->assertArrayHasKey('meetings', $actualResponse);
+        $this->assertArrayHasKey('attendees', $actualResponse);
+        $this->assertNotEmpty($actualResponse['meetings']);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualResponse['meetings'][0]);
+        $this->assertNotEmpty($actualResponse['attendees']);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Attendee', $actualResponse['attendees'][0]);
+    }
+
     public function singleMeetingProvider()
     {
         $responseArray = array(
@@ -238,6 +270,40 @@ class MeetingServiceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 $meeting
+            )
+        );
+    }
+
+    public function attendeesByMeetingProvider()
+    {
+        $meetingInstanceKey = 12345;
+        $startDate = new \DateTime();
+        $endDate = new \DateTime();
+        $endDate->add(new \DateInterval('P1W'));
+        $responseArray = array(
+            array(
+                'organizerKey' => 123456789,
+                'firstName' => 'John',
+                'lastName' => 'Smith',
+                'email' => 'johnsmith@example.com',
+                'meetingId' => 123456789,
+                'meetingInstanceKey' => 1,
+                'subject' => 'test',
+                'startTime' => '2012-12-01T09:00:00.+0000',
+                'endTime' => '2012-12-01T10:00:00.+0000',
+                'duration' => 60,
+                'conferenceCallInfo' => 'Australia: +61 2 9037 1944\nCanada: +1 (647) 977-5956\nUnited Kingdom: +44 (0) 207 151 1850\nIreland: +353 (0) 15 290 180\nUnited States: +1 (773) 945-1031\nAccess Code: 111-952-374',
+                'meetingType' => 'scheduled',
+                'numAttendees' => 1,
+                'groupName' => 'Developers'
+            )
+        );
+        return array(
+            array(
+                $meetingInstanceKey,
+                $startDate,
+                $endDate,
+                $responseArray
             )
         );
     }

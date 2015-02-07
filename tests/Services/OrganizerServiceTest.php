@@ -7,6 +7,7 @@ namespace Services;
 
 
 use kenobi883\GoToMeeting\Models\Organizer;
+use kenobi883\GoToMeeting\Services\MeetingService;
 use kenobi883\GoToMeeting\Services\OrganizerService;
 
 class OrganizerServiceTest extends \PHPUnit_Framework_TestCase
@@ -181,6 +182,38 @@ class OrganizerServiceTest extends \PHPUnit_Framework_TestCase
         $organizerService->deleteOrganizerByEmail($organizer->getEmail());
     }
 
+    /**
+     * @dataProvider attendeesByOrganizerProvider
+     */
+    public function testGetAttendeesByOrganizer($organizerKey, \DateTime $startDate, \DateTime $endDate, $responseArray)
+    {
+        $client = $this->getMockBuilder('Client')
+            ->setMethods(array(
+                'sendRequest'
+            ))
+            ->getMock();
+        $client->method('sendRequest')
+            ->will($this->returnValue(array(
+                $responseArray
+            )));
+        $client->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->stringContains('GET', false),
+                $this->stringContains("organizers/{$organizerKey}/attendees"),
+                $this->attributeEqualTo('data', array(
+                    'startDate' => $startDate->format(MeetingService::DATE_FORMAT_INPUT),
+                    'endDate' => $endDate->format(MeetingService::DATE_FORMAT_INPUT)
+                )));
+        $groupService = new OrganizerService($client);
+        $actualResponse = $groupService->getAttendeesByOrganizer($organizerKey, $startDate, $endDate);
+        $this->assertArrayHasKey('meetings', $actualResponse);
+        $this->assertArrayHasKey('attendees', $actualResponse);
+        $this->assertNotEmpty($actualResponse['meetings']);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualResponse['meetings'][0]);
+        $this->assertNotEmpty($actualResponse['attendees']);
+        $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Attendee', $actualResponse['attendees'][0]);
+    }
+
     public function createOrganizer()
     {
         $organizer = new Organizer();
@@ -207,6 +240,31 @@ class OrganizerServiceTest extends \PHPUnit_Framework_TestCase
             array(
                 $organizerKey,
                 $isActive
+            )
+        );
+    }
+
+    public function attendeesByOrganizerProvider()
+    {
+        $organizerKey = 123456789;
+        $startDate = new \DateTime();
+        $endDate = new \DateTime();
+        $endDate->add(new \DateInterval('P1W'));
+        $responseArray = array(
+            array(
+                'name' => 'John Smith',
+                'email' => 'johnsmith@example.com',
+                'meetingId' => 123456789,
+                'startTime' => '2012-12-01T09:00:00.+0000',
+                'endTime' => '2012-12-01T10:00:00.+0000'
+            )
+        );
+        return array(
+            array(
+                $organizerKey,
+                $startDate,
+                $endDate,
+                $responseArray
             )
         );
     }
