@@ -3,3 +3,4 @@
 vendor
 .vagrant
 composer.phar
+development.log

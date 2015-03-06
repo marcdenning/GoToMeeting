@@ -6,7 +6,9 @@
 
 namespace kenobi883\GoToMeeting;
 use GuzzleHttp\Query;
+use GuzzleHttp\Subscriber\Log\LogSubscriber;
 use kenobi883\GoToMeeting\Models\Auth;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Client
@@ -42,8 +44,9 @@ class Client
      * @param string $apiKey client ID or API key
      * @param string|null $accessToken optionally provide an obtained OAuth access token
      *   to configure the auth property
+     * @param LoggerInterface|null $logger logger implementation to log requests and responses against
      */
-    public function __construct($apiKey, $accessToken = NULL)
+    public function __construct($apiKey, $accessToken = NULL, LoggerInterface $logger = NULL)
     {
         $this->apiKey = $apiKey;
         $this->guzzleClient = new \GuzzleHttp\Client(array(
@@ -53,6 +56,9 @@ class Client
             $auth = new Auth();
             $auth->setAccessToken($accessToken);
             $this->setAuth($auth);
+        }
+        if ($logger !== NULL) {
+            $this->guzzleClient->getEmitter()->attach(new LogSubscriber($logger));
         }
     }
 
