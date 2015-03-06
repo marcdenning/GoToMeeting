@@ -440,7 +440,7 @@ class Meeting implements \JsonSerializable
         if (isset($response['startTime'])) {
             if (is_int($response['startTime'])) {
                 $startTime = new \DateTime('now', new \DateTimeZone('UTC'));
-                $startTime->setTimestamp($response['startTime']);
+                $startTime->setTimestamp($response['startTime'] / 1000);
             }
             else {
                 $startTime = new \DateTime($response['startTime']);
@@ -450,7 +450,7 @@ class Meeting implements \JsonSerializable
         if (isset($response['endTime'])) {
             if (is_int($response['endTime'])) {
                 $endTime = new \DateTime('now', new \DateTimeZone('UTC'));
-                $endTime->setTimestamp($response['endTime']);
+                $endTime->setTimestamp($response['endTime'] / 1000);
             }
             else
                 $endTime = new \DateTime($response['endTime']);

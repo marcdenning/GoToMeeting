@@ -41,7 +41,11 @@ class MeetingServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
         $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
         $this->assertAttributeNotEmpty('meetingId', $actualMeeting);
         $this->assertAttributeInstanceOf('\DateTime', 'startTime', $actualMeeting);
+        $startTime = Carbon::createFromTimestampUTC($actualMeeting->getStartTime()->getTimestamp());
+        $this->assertTrue($startTime->between(Carbon::now('UTC')->subYear(), Carbon::now('UTC')->addYear()));
         $this->assertAttributeInstanceOf('\DateTime', 'endTime', $actualMeeting);
+        $endTime = Carbon::createFromTimestampUTC($actualMeeting->getEndTime()->getTimestamp());
+        $this->assertTrue($endTime->between(Carbon::now('UTC')->subYear(), Carbon::now('UTC')->addYear()));
     }
 
     public function testGetHistoricalMeetings()
