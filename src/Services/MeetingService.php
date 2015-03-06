@@ -170,7 +170,11 @@ class MeetingService extends AbstractService
 
         // Parse each meeting result
         $meetings = array();
-        foreach ($jsonBody as $oneMeeting) {
+        $jsonMeetings = $jsonBody;
+        if (isset($jsonBody['meetings'])) {
+            $jsonMeetings = $jsonBody['meetings'];
+        }
+        foreach ($jsonMeetings as $oneMeeting) {
             $meeting = new Meeting($oneMeeting);
             $meetings[] = $meeting;
         }

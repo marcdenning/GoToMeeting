@@ -438,19 +438,35 @@ class Meeting implements \JsonSerializable
             $this->setSubject($response['subject']);
         }
         if (isset($response['startTime'])) {
-            $this->setStartTime(new \DateTime($response['startTime']));
+            if (is_int($response['startTime'])) {
+                $startTime = new \DateTime('now', new \DateTimeZone('UTC'));
+                $startTime->setTimestamp($response['startTime']);
+            }
+            else {
+                $startTime = new \DateTime($response['startTime']);
+            }
+            $this->setStartTime($startTime);
         }
         if (isset($response['endTime'])) {
-            $this->setEndTime(new \DateTime($response['endTime']));
+            if (is_int($response['endTime'])) {
+                $endTime = new \DateTime('now', new \DateTimeZone('UTC'));
+                $endTime->setTimestamp($response['endTime']);
+            }
+            else
+                $endTime = new \DateTime($response['endTime']);
+            $this->setEndTime($endTime);
         }
         if (isset($response['conferenceCallInfo'])) {
             $this->setConferenceCallInfo($response['conferenceCallInfo']);
         }
         if (isset($response['passwordRequired'])) {
-            $this->setPasswordRequired($response['passwordRequired'] == 'true');
+            $this->setPasswordRequired($response['passwordRequired'] == 'true' || $response['passwordRequired'] === true);
         }
         if (isset($response['meetingType'])) {
             $this->setMeetingType($response['meetingType']);
+        }
+        if (isset($response['recurring'])) {
+            $this->setMeetingType($response['recurring'] === true ? 'recurring' : 'scheduled');
         }
         if (isset($response['maxParticipants'])) {
             $this->setMaxParticipants((int) $response['maxParticipants']);
@@ -463,6 +479,9 @@ class Meeting implements \JsonSerializable
         }
         if (isset($response['organizerkey'])) {
             $this->setOrganizerKey((int) $response['organizerkey']);
+        }
+        if (isset($response['organizerKey'])) {
+            $this->setOrganizerKey((int) $response['organizerKey']);
         }
         if (isset($response['meetingInstanceKey'])) {
             $this->setMeetingInstanceKey((int) $response['meetingInstanceKey']);

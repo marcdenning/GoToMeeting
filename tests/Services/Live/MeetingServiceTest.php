@@ -39,6 +39,9 @@ class MeetingServiceTest extends \kenobi883\GoToMeeting\LiveServiceTestCase
         $this->assertNotEmpty($meetings);
         $actualMeeting = $meetings[0];
         $this->assertInstanceOf('\kenobi883\GoToMeeting\Models\Meeting', $actualMeeting);
+        $this->assertAttributeNotEmpty('meetingId', $actualMeeting);
+        $this->assertAttributeInstanceOf('\DateTime', 'startTime', $actualMeeting);
+        $this->assertAttributeInstanceOf('\DateTime', 'endTime', $actualMeeting);
     }
 
     public function testGetHistoricalMeetings()
